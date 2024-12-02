@@ -59,11 +59,11 @@ vault write auth/approle/role/myapp \
   token_num_uses=5 \
   token_ttl=10m \
   token_max_ttl=20m \
-  token_bound_cidrs="10.0.0.0/20","10.0.16.0/20" \
+  token_bound_cidrs="10.0.48.0/24","10.0.49.0/24" \
   token_no_default_policy=true \
   secret_id_ttl=10m \
   secret_id_num_uses=1 \
-  secret_id_bound_cidrs="10.0.0.0/20","10.0.16.0/20"
+  secret_id_bound_cidrs="10.0.48.0/24","10.0.49.0/24"
 
 # Get RoleID
 vault read auth/approle/role/myapp/role-id
@@ -75,7 +75,7 @@ vault policy write approle-myapp-secret - << EOF
 path "auth/approle/role/myapp/secret-id" {
     capabilities = ["update"]
     min_wrapping_ttl = "1s"
-    max_wrapping_ttl = "90s"
+    max_wrapping_ttl = "120s"
 }
 EOF
 
