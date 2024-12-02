@@ -22,7 +22,7 @@ jobs:
 
       - name: Terraform init
         run: terraform init -backend-config=environment/dev/backend.tfvars
-        working-directory: ./iac-myapp-deploy/terraform
+        working-directory: ./repo3-iac-myapp-deploy/terraform
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -30,7 +30,7 @@ jobs:
       
       - name: Terraform destroy
         run: terraform destroy -auto-approve -var-file=environment/dev/terraform.tfvars -var container_image=${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY_NAME }}:${GITHUB_REF_NAME::8}
-        working-directory: ./iac-myapp-deploy/terraform
+        working-directory: ./repo3-iac-myapp-deploy/terraform
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

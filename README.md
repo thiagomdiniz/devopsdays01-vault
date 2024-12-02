@@ -1,5 +1,16 @@
+# DevOpsDays01-Vault
 
 > Do not run a Vault dev server in production. This approach starts a Vault server with an in-memory database and runs in an insecure way.
+
+To facilitate the demonstration, only one Git repository organized into folders was used, but in a real environment, the ideal would be for each folder to be a different repository.
+
+| Repository | Description |
+| --- | --- |
+| [repo1-iac-vault](/repo1-iac-vault/) | The infrastructure code (Terraform) that spins up a HashiCorp Vault container on AWS ECS with Fargate. |
+| [repo2-code-myapp-build](/repo2-code-myapp-build/) | The test application code for building and publishing to the container registry (AWS ECR). |
+| [repo3-iac-myapp-deploy](/repo3-iac-myapp-deploy/) | The infrastructure code (Terraform) that launches the test application container on AWS ECS with Fargate. |
+
+[GitHub Actions/Workflows](/.github/workflows) Pipelines that automate application build and deployment steps.
 
 ```sh
 # cria backend S3
@@ -33,7 +44,8 @@ export VAULT_ADDR='http://devopsdays-vault-ingress-132772647.us-east-1.elb.amazo
 export VAULT_TOKEN='root_pwd'
 ```
 
-# Enable key/value secrets engine to store secrets
+```sh
+# Enable key/value secrets engine to store secrets if needed
 #vault secrets enable -path=secret -version=2 kv
 
 vault kv put \
@@ -41,7 +53,6 @@ vault kv put \
   pipelines/myapp/dev \
   DB_USER="user" DB_PASS="pass" DB_HOST="mydb-host.local" ADMIN_EMAIL="admin@devopsdays"
 
-```sh
 # Enable AppRole auth
 vault auth enable approle
 

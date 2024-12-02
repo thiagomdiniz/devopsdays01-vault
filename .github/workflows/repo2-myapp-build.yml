@@ -31,7 +31,7 @@ jobs:
         run: |
           sed -i "s~<vault_addr>~${{ vars.VAULT_ADDR }}~" docker-entrypoint.sh
           docker build --build-arg ROLE_ID=${{ secrets.ROLE_ID }} --build-arg VERSION=${GITHUB_REF_NAME::8} -t app .
-        working-directory: ./code-myapp-build
+        working-directory: ./repo2-code-myapp-build
 
       - name: Create ECR repository if not exists
         run: |
@@ -51,11 +51,11 @@ jobs:
 
       - name: Tag image
         run: docker tag app:latest ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY_NAME }}:${GITHUB_REF_NAME::8}
-        working-directory: ./code-myapp-build
+        working-directory: ./repo2-code-myapp-build
 
       - name: Publish image
         run: docker push ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY_NAME }}:${GITHUB_REF_NAME::8}
-        working-directory: ./code-myapp-build
+        working-directory: ./repo2-code-myapp-build
 
   trigger-deploy:
     runs-on: ubuntu-latest
