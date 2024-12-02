@@ -12,7 +12,7 @@ COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 COPY ./requirements.txt /code/requirements.txt
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends awscli \
+  && apt-get install -y --no-install-recommends awscli curl jq \
   && pip install --no-cache-dir --upgrade -r /code/requirements.txt \
   && chmod +x /docker-entrypoint.sh \
   && rm -rf /var/lib/apt/lists/*
