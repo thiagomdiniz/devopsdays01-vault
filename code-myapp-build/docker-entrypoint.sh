@@ -46,7 +46,7 @@ mount_secrets () {
 }
 
 start_app () {
-  exec fastapi run app/main.py --port 8080 --proxy-headers --forwarded-allow-ips='10.0.48.0/24,10.0.49.0/24'
+  exec fastapi run app/main.py --port 8080 --proxy-headers #--forwarded-allow-ips='10.0.48.0/24,10.0.49.0/24'
 }
 
 main () {
