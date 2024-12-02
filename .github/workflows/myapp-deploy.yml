@@ -69,7 +69,7 @@ jobs:
     steps:
       - name: Generate vault wrapped token
         run: |
-          WRAP_TOKEN=$(curl -k --silent --header "X-Vault-Wrap-TTL: 60s" --header "X-Vault-Token: ${{ secrets.VAULT_TOKEN }}" --request POST ${{ vars.VAULT_ADDR }}v1/auth/approle/role/${{ env.APP_NAME }}/secret-id | jq -r ".wrap_info.token")
+          WRAP_TOKEN=$(curl -k --silent --header "X-Vault-Wrap-TTL: 90s" --header "X-Vault-Token: ${{ secrets.VAULT_TOKEN }}" --request POST ${{ vars.VAULT_ADDR }}v1/auth/approle/role/${{ env.APP_NAME }}/secret-id | jq -r ".wrap_info.token")
           echo "$WRAP_TOKEN" > secret.txt
           aws s3 cp secret.txt s3://myapp-secret/
           rm -f secret.txt
