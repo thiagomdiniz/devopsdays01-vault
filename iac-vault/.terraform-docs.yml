@@ -1,0 +1,10 @@
+# https://terraform-docs.io/user-guide/configuration/#options
+
+formatter: markdown table
+
+header-from: docs/header.md
+footer-from: docs/footer.md
+
+output:
+  file: README.md
+  mode: replace

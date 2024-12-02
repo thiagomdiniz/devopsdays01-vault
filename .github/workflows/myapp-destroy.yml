@@ -1,0 +1,53 @@
+name: MyApp Undeploy (destroy)
+
+on: workflow_dispatch
+
+env:
+  AWS_ACCOUNT: "357834747308"
+  AWS_REGION: "us-east-1"
+  APP_NAME: "myapp"
+  REPOSITORY_NAME: "devopsdays-vault/$APP_NAME"
+
+jobs:
+  undeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.5.7'
+
+      - name: Terraform init
+        run: terraform init -backend-config=environment/dev/backend.tfvars
+        working-directory: ./iac-myapp-deploy/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+      
+      - name: Terraform destroy
+        run: terraform destroy -auto-approve -var-file=environment/dev/terraform.tfvars -var container_image=${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY_NAME }}:${GITHUB_REF_NAME::8}
+        working-directory: ./iac-myapp-deploy/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+      
+      - name: Delete ECR repository if exists
+        run: |
+          set +e
+          REPO_EXISTS=$(aws ecr describe-repositories --repository-names ${{ env.REPOSITORY_NAME }} 2>&1)
+          if [[ $REPO_EXISTS == *"RepositoryNotFoundException"* ]]; then
+            echo " ->Repository ${{ env.REPOSITORY_NAME }} not found."
+          else
+            echo " ->Repository ${{ env.REPOSITORY_NAME }} exists. Deleting..."
+            aws ecr delete-repository --force --repository-name ${{ env.REPOSITORY_NAME }}
+          fi
+          set -e
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}

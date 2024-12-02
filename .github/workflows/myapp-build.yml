@@ -1,0 +1,77 @@
+name: MyApp Build and Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  AWS_ACCOUNT: "357834747308"
+  AWS_REGION: "us-east-1"
+  APP_NAME: "myapp"
+  CLUSTER_NAME: "devopsdays-vault"
+  REPOSITORY_NAME: "devopsdays-vault/$APP_NAME"
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Login to AWS ECR Private
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+
+      - name: Build image
+        run: docker build --build-arg ROLE_ID=${{ secrets.ROLE_ID }} --build-arg VERSION=${GITHUB_REF_NAME::8} -t app .
+        working-directory: ./code-myapp-build
+
+      - name: Create ECR repository if not exists
+        run: |
+          set +e
+          REPO_EXISTS=$(aws ecr describe-repositories --repository-names ${{ env.REPOSITORY_NAME }} 2>&1)
+          if [[ $REPO_EXISTS == *"RepositoryNotFoundException"* ]]; then
+            echo " ->Repository ${{ env.REPOSITORY_NAME }} not found. Creating..."
+            aws ecr create-repository --repository-name ${{ env.REPOSITORY_NAME }}
+          else
+            echo " ->Repository ${{ env.REPOSITORY_NAME }} already exists."
+          fi
+          set -e
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+
+      - name: Tag image
+        run: docker tag app:latest ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY_NAME }}:${GITHUB_REF_NAME::8}
+        working-directory: ./code-myapp-build
+
+      - name: Publish image
+        run: docker push ${{ env.AWS_ACCOUNT }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.REPOSITORY_NAME }}:${GITHUB_REF_NAME::8}
+        working-directory: ./code-myapp-build
+
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build-publish
+    steps:
+      - name: Trigger deploy workflow
+        run: |
+          # Set the required variables
+          repo="${GITHUB_REPOSITORY}" 
+          event_type="trigger-deploy-workflow" 
+          service="${{ env.APP_NAME }}"
+          version="${GITHUB_REF_NAME::8}"
+          curl -L \
+            --fail-with-body \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.PAT }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/$repo/dispatches \
+            -d "{\"event_type\": \"$event_type\", \"client_payload\": {\"service\": \"$service\", \"version\": \"$version\", \"unit\": false, \"integration\": true}}"
