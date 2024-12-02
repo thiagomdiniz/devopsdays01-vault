@@ -32,7 +32,7 @@ mount_secrets () {
       do
           echo -e "\nSetting variable: ${key}..."
           value=$(echo $data | jq -r ".${key}")
-          sed -i -E "s#(^${KEY}=\"?)(.*[^\"])?(\"?)#\1${value}\3#" ${env_file}/.env
+          sed -i -E "s#(^${KEY}=\"?)(.*[^\"])?(\"?)#\1${value}\3#" ${env_file}
       done
 
       done=1
