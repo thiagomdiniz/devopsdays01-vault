@@ -39,7 +39,7 @@ export VAULT_TOKEN='root_pwd'
 vault kv put \
   -mount secret \
   pipelines/myapp/dev \
-  db_user="user" db_pass="pass" timeout="60"
+  DB_USER="user" DB_PASS="pass" DB_HOST="mydb-host.local" ADMIN_EMAIL="admin@devopsdays"
 
 ```sh
 # Enable AppRole auth
