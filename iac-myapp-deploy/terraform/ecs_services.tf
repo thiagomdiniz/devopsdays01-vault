@@ -16,10 +16,10 @@ resource "aws_ecs_service" "main" {
       data.aws_ssm_parameter.private_subnet_1.value,
       data.aws_ssm_parameter.private_subnet_2.value,
     ]
-    security_groups  = [
-        aws_security_group.lb.id,
-        aws_security_group.efs.id,
-      ]
+    security_groups = [
+      aws_security_group.lb.id,
+      aws_security_group.efs.id,
+    ]
     assign_public_ip = false
   }
 

@@ -4,15 +4,15 @@ resource "aws_ecs_task_definition" "main" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.service_cpu
   memory                   = var.service_memory
-  execution_role_arn       = aws_iam_role.main.arn
-  task_role_arn       = aws_iam_role.main.arn
+  execution_role_arn       = aws_iam_role.service.arn
+  task_role_arn            = aws_iam_role.task.arn
 
   volume {
     name = "conf"
 
     efs_volume_configuration {
-      file_system_id = aws_efs_file_system.main.id
-      root_directory = "/"
+      file_system_id     = aws_efs_file_system.main.id
+      root_directory     = "/"
       transit_encryption = "ENABLED"
     }
   }
@@ -41,9 +41,9 @@ resource "aws_ecs_task_definition" "main" {
 
       mountPoints = [
         {
-          sourceVolume = "conf"
+          sourceVolume  = "conf"
           containerPath = "/mnt/efs"
-          readOnly = false
+          readOnly      = false
         }
       ]
 
