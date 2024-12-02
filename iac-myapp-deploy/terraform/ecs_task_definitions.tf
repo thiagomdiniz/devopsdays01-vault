@@ -63,4 +63,9 @@ resource "aws_ecs_task_definition" "main" {
 
     }
   ])
+
+  depends_on = [
+    aws_efs_mount_target.mount_1a,
+    aws_efs_mount_target.mount_1b,
+  ]
 }
