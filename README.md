@@ -10,7 +10,9 @@ To facilitate the demonstration, only one Git repository organized into folders 
 | [repo2-code-myapp-build](/repo2-code-myapp-build/) | The test application code for building and publishing to the container registry (AWS ECR). |
 | [repo3-iac-myapp-deploy](/repo3-iac-myapp-deploy/) | The infrastructure code (Terraform) that launches the test application container on AWS ECS with Fargate. |
 
-[GitHub Actions/Workflows](/.github/workflows) Pipelines that automate application build and deployment steps.
+|  |  |
+| --- | --- |
+| [GitHub Actions/Workflows](/.github/workflows) | Pipelines that automate application build and deployment steps. |
 
 ```sh
 # cria backend S3
