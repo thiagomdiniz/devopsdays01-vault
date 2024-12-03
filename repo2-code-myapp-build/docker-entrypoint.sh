@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 bucket="myapp-secret"
 secret_file="secret.txt"
 env_file="/mnt/efs/.env"
@@ -18,18 +20,16 @@ mount_secrets () {
     if [ $EXIST ]; then
       # copy secret file
       aws s3 cp s3://${bucket}/${secret_file} .
-      # delete secret file
-      aws s3 rm s3://${bucket}/${secret_file}
 
       echo "Vault secret received."
       echo "Getting wrapped token from file..."
       wrap_token=$(cat $secret_file)
       echo "Unwrapping the token..."
-      secret_id=$(curl -k -f --silent --header "X-Vault-Token: $wrap_token" --request POST ${vault_addr}v1/sys/wrapping/unwrap | jq -r ".data.secret_id")
+      secret_id=$(curl -k --fail-with-body --silent --header "X-Vault-Token: $wrap_token" --request POST ${vault_addr}v1/sys/wrapping/unwrap | jq -r ".data.secret_id")
       echo "Authenticating with RoleID + SecretID..."
-      app_token=$(curl -k -f --silent --request POST --data '{"role_id": "'${ROLE_ID}'", "secret_id": "'${secret_id}'"}' ${vault_addr}v1/auth/approle/login | jq -r ".auth.client_token")
+      app_token=$(curl -k --fail-with-body --silent --request POST --data '{"role_id": "'${ROLE_ID}'", "secret_id": "'${secret_id}'"}' ${vault_addr}v1/auth/approle/login | jq -r ".auth.client_token")
       echo "Getting app secrets..."
-      data=$(curl -k -f --silent --header "X-Vault-Token: $app_token" ${vault_addr}${vault_path} | jq -r ".data.data")
+      data=$(curl -k --fail-with-body --silent --header "X-Vault-Token: $app_token" ${vault_addr}${vault_path} | jq -r ".data.data")
 
       # set/overwrite specific app configuration parameters based on vault data
       for key in $(echo $data |jq -r 'keys[]');
@@ -38,6 +38,9 @@ mount_secrets () {
           value=$(echo $data | jq -r ".${key}")
           sed -i -E "s#(^${KEY}=\"?)(.*[^\"])?(\"?)#\1${value}\3#" ${env_file}
       done
+
+      # delete secret file
+      aws s3 rm s3://${bucket}/${secret_file}
 
       done=1
 
