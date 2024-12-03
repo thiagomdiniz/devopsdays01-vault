@@ -1,4 +1,4 @@
-# devopsdays-repo1-iac-vault
+# devopsdays-repo3-iac-myapp-deploy
 
 > Repository that deploys the app and makes the wrapped secret_id available to the app.
 
