@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 set -eo pipefail
 
@@ -36,7 +36,7 @@ mount_secrets () {
       do
           echo -e "\nSetting variable: ${key}..."
           value=$(echo $data | jq -r ".${key}")
-          sed -i -E "s#(^${KEY}=\"?)(.*[^\"])?(\"?)#\1${value}\3#" ${env_file}
+          sed -i -E "s#(^${key}=\"?)(.*[^\"])?(\"?)#\1${value}\3#" ${env_file}
       done
 
       # delete secret file
