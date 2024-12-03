@@ -73,7 +73,8 @@ load_balancer_dns = "devopsdays-vault-ingress-1957212066.us-east-1.elb.amazonaws
 
 Configuring HashiCorp Vault to support the `AppRole authentication method` used to deploy the app.
 
-### install Vault client or run a container with the client
+### Install Vault client or run a container with the client
+
 - https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install
 - `docker run --rm -it --entrypoint sh hashicorp/vault:1.18`
 
@@ -83,6 +84,8 @@ Configuring HashiCorp Vault to support the `AppRole authentication method` used 
 export VAULT_ADDR='http://<load_balancer_dns>:8200'
 export VAULT_TOKEN='root_pwd'
 ```
+
+### Vault commands
 
 ```sh
 # Create some secrets for the app
