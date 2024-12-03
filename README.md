@@ -12,7 +12,7 @@ To facilitate the demonstration, only one Git repository organized into folders 
 
 | Resource | Link |
 | --- | --- |
-| Presentation given at DevOpsDays Montreal. | [Slides]() |
+| Presentation given at DevOpsDays Montreal. | [Slides](https://docs.google.com/presentation/d/1qenQZuDia8NLHGw9EZ4wdRXKRcGc3ApVbSsh_JpfUs4/edit?usp=sharing) |
 
 | Repository | Description |
 | --- | --- |
