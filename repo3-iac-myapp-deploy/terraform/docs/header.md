@@ -1,10 +1,10 @@
 # devopsdays-repo1-iac-vault
 
-> Repository that builds AWS infrastructure to run serverless containers (ECS + Fargate).
+> Repository that deploys the app and makes the wrapped secret_id available to the app.
 
 ## Terraform
 
-Set `terraform` variables in [these files](/repo1-iac-vault/environment/dev/).  
+Set `terraform` variables in [these files](/repo3-iac-myapp-deploy/terraform/environment/dev/).  
 Example of using `terraform` referencing `.tfvars` files:
 
 ```sh
