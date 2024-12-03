@@ -60,6 +60,7 @@ main () {
   # if env file exists
   if [ -f "$env_file" ]; then
     # get version
+    cat $env_file
     env_file_version=$(cat $env_file |grep VERSION |cut -d'=' -f2)
     current_version="$VERSION"
 
@@ -78,6 +79,5 @@ main () {
   fi
 }
 
-cat $env_file
 main
 start_app
