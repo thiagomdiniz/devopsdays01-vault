@@ -35,17 +35,10 @@ resource "aws_ecs_task_definition" "vault" {
         },
       ]
 
-      # secrets = [
-      #   {
-      #     name = "test_var"
-      #     valueFrom = aws_ssm_parameter.lb_dns.value
-      #   },
-      # ]
-
       #!works only with EC2 launch type!
       # linuxParameters = {
       #   capabilities = {
-      #     add = ["IPC_LOCK"] # Adiciona o IPC_LOCK
+      #     add = ["IPC_LOCK"] # Adds IPC_LOCK
       #   }
       # }
     }

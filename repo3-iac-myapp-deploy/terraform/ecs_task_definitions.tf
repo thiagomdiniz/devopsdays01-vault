@@ -47,20 +47,6 @@ resource "aws_ecs_task_definition" "main" {
         }
       ]
 
-      environment = [
-        {
-          name  = "VAULT_DEV_ROOT_TOKEN_ID"
-          value = ""
-        },
-      ]
-
-      # secrets = [
-      #   {
-      #     name = "test_var"
-      #     valueFrom = aws_ssm_parameter.lb_dns.arn
-      #   },
-      # ]
-
     }
   ])
 

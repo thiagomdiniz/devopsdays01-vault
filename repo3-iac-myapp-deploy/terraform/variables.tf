@@ -1,61 +1,64 @@
 variable "region" {
   type        = string
-  description = "Região da AWS onde os recursos serão provisionados."
+  description = "AWS Region where resources will be provisioned."
 }
 
 variable "cluster_name" {
   type        = string
-  description = "Nome do cluster ECS que hospedará o serviço."
+  description = "Name of the ECS cluster that will host the service."
 }
 
 variable "service_name" {
   type        = string
-  description = "Nome do serviço que será usado dentro do cluster."
+  description = "Name of the service that will be used within the cluster."
 }
 
 variable "service_port" {
   type        = number
-  description = "Porta TCP na qual o serviço aceitará tráfego."
+  description = "TCP port on which the service will accept traffic."
 }
 
 variable "service_cpu" {
   type        = number
-  description = "Quantidade de CPU reservada para o serviço, em unidades definidas pela AWS."
+  description = "Amount of CPU reserved for the service, in units defined by AWS."
 }
 
 variable "service_memory" {
   type        = number
-  description = "Quantidade de memória reservada para o serviço, em megabytes."
+  description = "Amount of memory reserved for the service, in megabytes."
 }
 
 variable "service_task_count" {
   type        = number
-  description = "Número de tarefas que o serviço deve manter em execução simultaneamente."
+  description = "Number of tasks the service should keep running simultaneously."
 }
 
 variable "container_image" {
   type        = string
-  description = "Imagem com tag para deployment da aplicação no ECS."
+  description = "Image with tag for application deployment in ECS."
 }
 
 variable "lb_listener_port" {
   type        = number
-  description = "Porta TCP na qual o serviço aceitará tráfego."
+  description = "TCP port on which the service will accept traffic."
 }
 
 variable "ssm_vpc_id" {
   type        = string
-  description = "ID do VPC armazenado no AWS Systems Manager (SSM) onde o serviço será implantado."
+  description = "VPC ID stored in AWS Systems Manager (SSM) where the service will be deployed."
 }
 
 variable "ssm_private_subnet_1" {
   type        = string
-  description = "ID da primeira subnet privada, armazenado no AWS SSM, onde o serviço será implantado."
+  description = "ID of the first private subnet, stored in AWS SSM, where the service will be deployed."
 }
 
 variable "ssm_private_subnet_2" {
   type        = string
-  description = "ID da segunda subnet privada, armazenado no AWS SSM, para implantação do serviço."
+  description = "ID of the second private subnet, stored in AWS SSM, for deploying the service."
 }
 
-variable "ssm_alb" {}
+variable "ssm_alb" {
+  type = string
+  description = "Load balancer ID stored in SSM, used to configure listener"
+}

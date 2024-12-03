@@ -26,27 +26,3 @@ resource "aws_lb_listener" "vault" {
     target_group_arn = aws_alb_target_group.vault.arn
   }
 }
-
-# resource "aws_lb_listener" "main" {
-#   load_balancer_arn = aws_lb.main.arn
-#   port              = "80"
-#   protocol          = "HTTP"
-#   default_action {
-#     type = "forward"
-#     target_group_arn = aws_alb_target_group.vault.arn
-
-#     # type = "redirect"
-#     # redirect {
-#     #   protocol = "HTTPS"
-#     #   port     = "443"
-#     #   status_code = "HTTP_301"
-#     # }
-
-#     # type = "fixed-response"
-#     # fixed_response {
-#     #   content_type = "text/plain"
-#     #   message_body = "DevOpsDays"
-#     #   status_code  = "200"
-#     # }
-#   }
-# }

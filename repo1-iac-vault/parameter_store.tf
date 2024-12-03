@@ -39,9 +39,3 @@ resource "aws_ssm_parameter" "lb_dns" {
   type  = "String"
   value = aws_lb.main.dns_name
 }
-
-# resource "aws_ssm_parameter" "lb_listener" {
-#   name  = "/${var.project_name}/ecs/lb/listener"
-#   type  = "String"
-#   value = aws_lb_listener.vault.arn
-# }

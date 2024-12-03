@@ -1,40 +1,40 @@
 variable "project_name" {
   type        = string
-  description = "Nome do projeto. Utilizado como prefixo para os recursos criados dentro desse projeto."
+  description = "Project name. Used as a prefix for resources created within this project."
 }
 
 variable "aws_region" {
   type        = string
-  description = "Região da AWS onde os recursos serão criados."
+  description = "AWS Region where the resources will be created."
 }
 
 variable "fargate_capacity_providers" {
   type        = list(string)
-  description = "A lista dos capacity providers que serão permitidos no cluster Fargate."
+  description = "The list of capacity providers that will be allowed on the Fargate cluster."
   default = [
     "FARGATE", "FARGATE_SPOT"
   ]
 }
 
 variable "load_balancer_internal" {
-  description = "Define se o Load Balancer deve ser interno (true) ou externo (false)."
+  description = "Defines whether the Load Balancer should be internal (true) or external (false)."
   type        = bool
   default     = false
 }
 
 variable "load_balancer_type" {
-  description = "O tipo de Load Balancer a ser criado (ex: 'application' ou 'network')."
+  description = "The type of Load Balancer to be created (e.g. 'application' or 'network')."
   type        = string
   default     = "application"
 }
 
 variable "hashicorp_vault_container_image" {
-  description = "value"
+  description = "The container image used to run the HashiCorp Vault dev server."
   type        = string
   default     = "hashicorp/vault:latest"
 }
 
 variable "hashicorp_dev_root_token" {
-  description = "value"
+  description = "The root token (password) to access the Vault"
   type        = string
 }

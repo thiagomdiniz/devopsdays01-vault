@@ -22,7 +22,4 @@ COPY ./.env /code/.env
 
 EXPOSE 8080
 
-# CMD ["fastapi", "run", "app/main.py", "--port", "8080"]
-# If running behind a proxy like Nginx or Traefik add --proxy-headers
-# CMD ["fastapi", "run", "app/main.py", "--port", "8080", "--proxy-headers"]
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

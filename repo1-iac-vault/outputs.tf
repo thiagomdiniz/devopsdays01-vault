@@ -1,44 +1,39 @@
 output "ssm_vpc_id" {
-  description = "ID do VPC armazenado no AWS Systems Manager Parameter Store. Utilizado para identificar o VPC onde os recursos serão provisionados."
+  description = "VPC ID stored in AWS Systems Manager Parameter Store. Used to identify the VPC where resources will be provisioned."
   value       = aws_ssm_parameter.vpc.id
 }
 
 output "ssm_subnet_private_1a" {
-  description = "ID da subnet privada na zona de disponibilidade 1a. Armazenado no AWS Systems Manager Parameter Store, utilizado para provisionar recursos em uma subnet privada específica."
+  description = "Private subnet ID in Availability Zone 1a. Stored in AWS Systems Manager Parameter Store, used to provision resources in a specific private subnet."
   value       = aws_ssm_parameter.private_1a.id
 }
 
 output "ssm_subnet_private_1b" {
-  description = "ID da subnet privada na zona de disponibilidade 1a. Armazenado no AWS Systems Manager Parameter Store, utilizado para provisionar recursos em uma subnet privada específica."
+  description = "Private subnet ID in Availability Zone 1b. Stored in AWS Systems Manager Parameter Store, used to provision resources in a specific private subnet."
   value       = aws_ssm_parameter.private_1b.id
 }
 
 output "ssm_subnet_public_1a" {
-  description = "ID da subnet pública na zona de disponibilidade 1a. Armazenado no AWS Systems Manager Parameter Store, é utilizado para provisionar recursos acessíveis publicamente nesta zona."
+  description = "Public subnet ID in Availability Zone 1a. Stored in AWS Systems Manager Parameter Store, it is used to provision publicly accessible resources in this zone."
   value       = aws_ssm_parameter.public_1a.id
 }
 
 output "ssm_subnet_public_1b" {
-  description = "ID da subnet pública na zona de disponibilidade 1a. Armazenado no AWS Systems Manager Parameter Store, é utilizado para provisionar recursos acessíveis publicamente nesta zona."
+  description = "Public subnet ID in Availability Zone 1b. Stored in AWS Systems Manager Parameter Store, it is used to provision publicly accessible resources in this zone."
   value       = aws_ssm_parameter.public_1b.id
 }
 
 output "load_balancer_dns" {
-  description = "O nome DNS do Load Balancer criado. Esse valor pode ser usado para acessar o Load Balancer dentro da rede ou pela internet, dependendo da configuração."
+  description = "The DNS name of the created Load Balancer. This value can be used to access the Load Balancer within the network or over the internet, depending on the configuration."
   value       = aws_lb.main.dns_name
 }
 
 output "ssm_load_balancer_dns" {
-  description = "O nome DNS do Load Balancer criado. Esse valor pode ser usado para acessar o Load Balancer dentro da rede ou pela internet, dependendo da configuração."
+  description = "The DNS name of the Load Balancer, stored in the Parameter Store. This value can be used to access the Load Balancer within the network or over the Internet, depending on the configuration."
   value       = aws_ssm_parameter.lb_dns.id
 }
 
 output "ssm_lb_arn" {
-  description = "O Amazon Resource Name (ARN) do parâmetro do AWS Systems Manager (SSM) que armazena o ARN do Load Balancer. Esse valor pode ser usado para referenciar o ARN do Load Balancer em políticas de IAM, regras de segurança, ou em qualquer outro lugar que requeira o ARN do Load Balancer."
+  description = "The Amazon Resource Name (ARN) of the AWS Systems Manager (SSM) parameter that stores the Load Balancer ARN. This value can be used to reference the Load Balancer ARN in IAM policies, security rules, or anywhere else that requires the Load Balancer ARN."
   value       = aws_ssm_parameter.lb_arn.id
 }
-
-# output "lb_ssm_listener" {
-#   description = "O ID do parâmetro do AWS Systems Manager (SSM) que armazena o Listener do Load Balancer. Esse valor pode ser utilizado para referenciar o Listener em automações, scripts, ou dentro de outras configurações da AWS que necessitem do ID do Listener."
-#   value       = aws_ssm_parameter.lb_listener.id
-# }
