@@ -1,16 +1,16 @@
 ## DevOpsDays01-Vault
 
-To facilitate the demonstration, only one Git repository organized into folders was used, but in a real environment, the ideal would be for each folder to be a different repository.
+![Image that demonstrates the idea of the solution’s architecture](./env.drawio.png)
 
 ## About
+
+To facilitate the demonstration, only one Git repository organized into folders was used, but in a real environment, the ideal would be for each folder to be a different repository.
 
 > Do not run a Vault dev server in production. This approach starts a Vault server with an in-memory database and runs in an insecure way.
 
 | Resource | Link |
 | --- | --- |
 | Presentation given at DevOpsDays Montreal. | [Slides]() |
-
-![Image that demonstrates the idea of the solution’s architecture](./env.drawio.png)
 
 | Repository | Description |
 | --- | --- |
