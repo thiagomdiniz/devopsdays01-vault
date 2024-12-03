@@ -21,11 +21,15 @@ mount_secrets () {
       # delete secret file
       aws s3 rm s3://${bucket}/${secret_file}
 
-      echo "Vault secret received. Applying..."
+      echo "Vault secret received."
+      echo "Getting wrapped token from file..."
       wrap_token=$(cat $secret_file)
-      secret_id=$(curl -k --silent --header "X-Vault-Token: $wrap_token" --request POST ${vault_addr}v1/sys/wrapping/unwrap | jq -r ".data.secret_id")
-      app_token=$(curl -k --silent --request POST --data '{"role_id": "'${ROLE_ID}'", "secret_id": "'${secret_id}'"}' ${vault_addr}v1/auth/approle/login | jq -r ".auth.client_token")
-      data=$(curl -k --silent --header "X-Vault-Token: $app_token" ${vault_addr}${vault_path} | jq -r ".data.data")
+      echo "Unwrapping the token..."
+      secret_id=$(curl -k -f --silent --header "X-Vault-Token: $wrap_token" --request POST ${vault_addr}v1/sys/wrapping/unwrap | jq -r ".data.secret_id")
+      echo "Authenticating with RoleID + SecretID..."
+      app_token=$(curl -k -f --silent --request POST --data '{"role_id": "'${ROLE_ID}'", "secret_id": "'${secret_id}'"}' ${vault_addr}v1/auth/approle/login | jq -r ".auth.client_token")
+      echo "Getting app secrets..."
+      data=$(curl -k -f --silent --header "X-Vault-Token: $app_token" ${vault_addr}${vault_path} | jq -r ".data.data")
 
       # set/overwrite specific app configuration parameters based on vault data
       for key in $(echo $data |jq -r 'keys[]');

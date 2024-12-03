@@ -45,7 +45,7 @@ aws s3 mb s3://devopsdays-statefiles
 aws s3 ls
 
 # inicializar terraform
-cd iac-vault/
+cd repo1-iac-vault/
 terraform init -backend-config=environment/dev/backend.tfvars
 
 # exibir o plano de execucao, o que sera alterado
@@ -124,7 +124,7 @@ vault token create -orphan -policy=approle-myapp-secret -no-default-policy -ttl=
 
 
 # Retrieve a wrapped SecretID
-vault write -wrap-ttl=60s -force -field=wrapping_token auth/approle/role/myapp/secret-id
+vault write -wrap-ttl=120s -force -field=wrapping_token auth/approle/role/myapp/secret-id
 # Unwrap the SecretID
 VAULT_TOKEN="" vault unwrap -field=secret_id
 
