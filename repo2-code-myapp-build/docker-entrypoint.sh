@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 set -eo pipefail
 
@@ -76,6 +76,7 @@ main () {
     echo "Env file not exists, creating..."
     cp .env $env_file
     mount_secrets
+    cat $env_file
   fi
 }
 
