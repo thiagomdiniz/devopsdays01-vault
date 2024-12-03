@@ -115,7 +115,7 @@ vault policy write approle-myapp-secret - << EOF
 path "auth/approle/role/myapp/secret-id" {
     capabilities = ["update"]
     min_wrapping_ttl = "1s"
-    max_wrapping_ttl = "120s"
+    max_wrapping_ttl = "300s"
 }
 EOF
 
@@ -124,7 +124,7 @@ vault token create -orphan -policy=approle-myapp-secret -no-default-policy -ttl=
 
 
 # Retrieve a wrapped SecretID
-vault write -wrap-ttl=120s -force -field=wrapping_token auth/approle/role/myapp/secret-id
+vault write -wrap-ttl=300s -force -field=wrapping_token auth/approle/role/myapp/secret-id
 # Unwrap the SecretID
 VAULT_TOKEN="" vault unwrap -field=secret_id
 
@@ -141,3 +141,7 @@ Create a tag to trigger the app's build and deploy pipeline.
 git tag v1
 git push origin v1
 ```
+
+## Thanks
+
+Follow ...
